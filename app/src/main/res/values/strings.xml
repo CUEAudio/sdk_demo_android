@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Light Show Demo</string>
+
+    <string name="demo_launch">Launch</string>
+
+    <string name="cue_client_id">CUE-dev</string>
+</resources>
