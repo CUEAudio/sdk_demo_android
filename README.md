@@ -18,7 +18,6 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 allprojects {
     repositories {
-        ...
         google()
         jcenter()
         maven {
