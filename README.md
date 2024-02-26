@@ -147,6 +147,18 @@ final Intent i = new Intent(this, CUEActivity.class);
 
 Note: **If you pull your client API Key from the server**, it should be cached (e.g., `UserDefaults`) so that the user can access the light show even without a network connection.
 
+### Using EXTRA_CUE_PRIVACY flag
+
+You can pass optional EXTRA_CUE_PRIVACY flag to prevent collecting and sending to the server any user information. SDK initialization in this case looks like that:
+
+```java
+    private void launchApp() {
+        final Intent i = new Intent(this, CUEActivity.class);
+        i.putExtra(CUEActivity.EXTRA_CUE_PRIVACY, true);
+        startActivity(i);
+    }
+```
+
 ### CUEActivity theme
 If you need different navigation bar color or controls primary color for `CUEActivity`, override colors in `colors.xml`:
 
