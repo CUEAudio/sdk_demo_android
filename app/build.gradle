@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.cueaudio.demo"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -20,8 +20,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     namespace 'com.cueaudio.demo'
 }
@@ -29,5 +29,8 @@ android {
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.cueaudio:cuelive:3.+'
+//    implementation "com.github.hannesa2:paho.mqtt.android:3.6.4"
+    implementation 'com.cueaudio:cuelive:3.19.1'
+//    implementation files('../../LightShowAndroid/library/build/outputs/aar/library-cueLive-debug.aar')
+//    implementation files('../../LightShowAndroid/cue-design/build/outputs/aar/cue-design-debug.aar')
 }
