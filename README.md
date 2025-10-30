@@ -64,6 +64,21 @@ dependencies {
   startActivity(i);
   ```
 
+3. In your manifest, you should also include the following code below. Make sure to replace {your_app_name} with your app name (no spaces) and to share this value with the CUE team.
+
+```xml
+			<action android:name="android.intent.action.VIEW" />
+				...
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- CUE's deeplink domain and paths -->
+                <data android:scheme="https"/>
+                <data android:host="portal.cueaudio.com"/>
+                <data android:host="cueuc.com"/>
+                <data android:pathPrefix="/app/{your_app_name}"/>
+				...
+```
+
 CUEActivity.EXTRA_CUE_ENABLE_NAVIGATION_MENU activity extra flag regulates whether in-built navigation menu will be shown or not. This extra is optional. By default it is set to true.
 
 > **Note: If you are building your own GUI library from scratch, in your `res/values/strings.xml` file, include the resource:
