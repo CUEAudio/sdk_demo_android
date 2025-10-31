@@ -63,6 +63,7 @@ dependencies {
   i.putExtra(CUEActivity.EXTRA_CUE_ENABLE_NAVIGATION_MENU, true);
   startActivity(i);
   ```
+CUEActivity.EXTRA_CUE_ENABLE_NAVIGATION_MENU activity extra flag regulates whether in-built navigation menu will be shown or not. This extra is optional. By default it is set to true.
 
 3. In your manifest, you should also include the following code below. Make sure to replace {your_app_name} with your app name (no spaces) and to share this value with the CUE team.
 
@@ -78,11 +79,46 @@ dependencies {
                 <data android:pathPrefix="/app/{your_app_name}"/>
 				...
 ```
+Then, add the following code to your Main Activity so that the CUE sdk can properly launch when the user visits a CUE deep link:
 
-CUEActivity.EXTRA_CUE_ENABLE_NAVIGATION_MENU activity extra flag regulates whether in-built navigation menu will be shown or not. This extra is optional. By default it is set to true.
+```
+	...
+    private lateinit var webViewController: WebViewController
+	...
 
-> **Note: If you are building your own GUI library from scratch, in your `res/values/strings.xml` file, include the resource:
-`<string name="cue_client_id">{ClientId}</string>`**
+	override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        webViewController = WebViewController(this)
+        ...
+        handleIntent(intent)
+    }
+
+	override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (Intent.ACTION_VIEW == intent?.action) {
+            intent.data?.let { uri ->
+                val url = uri.toString()
+                urlEditText.setText(url)
+                if (url == "") {
+                    println("Empty URL is not allowed")
+                    return
+                }
+                try {
+                    webViewController.navigateTo(url)
+                } catch (e: InvalidUrlError) {
+                    // Show invalid URL error message
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+```
+
+This demo project contains this code as an example within the MainActivity file.
 
 ## Configuration
 CUE parameters can be overwritten and customized for your application. You can overwrite these parameters in `strings.xml` and `colors.xml` files in your project.
