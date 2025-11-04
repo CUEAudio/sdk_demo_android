@@ -102,7 +102,7 @@ Then, add the following code to your Main Activity so that the CUE sdk can prope
         if (Intent.ACTION_VIEW == intent?.action) {
             intent.data?.let { uri ->
                 val url = uri.toString()
-                urlEditText.setText(url)
+                
                 if (url == "") {
                     println("Empty URL is not allowed")
                     return
