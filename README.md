@@ -120,7 +120,101 @@ Then, add the following code to your Main Activity so that the CUE sdk can prope
 
 This demo project contains this code as an example within the MainActivity file.
 
-## Configuration
+Finally, in order for the deep links to work, please provide the SHA-256 fingerprint of your app. You can get it by following these instructions below:
+
+## How to Get Your Android App's SHA-256 Fingerprint
+
+#### Option 1 – From Google Play Console (Recommended if Play App Signing is enabled)
+
+If you're using Play App Signing, this is the safest way to get the right fingerprint (the "App signing certificate," not the upload key):
+
+1. Go to Google Play Console.
+2. Open the app.
+3. In the left menu: **Setup → App integrity** (older consoles: "Release management → App signing").
+4. In the **App signing** section, you'll see:
+   - App signing key certificate
+   - Upload key certificate
+5. Under **App signing key certificate**, copy the SHA-256 fingerprint.
+
+> **⚠️ Important:** For Digital Asset Links (assetlinks.json) you almost always want the **App signing key fingerprint**, not the upload key.
+
+---
+
+### Option 2 – From Your Keystore Using `keytool` (If You Sign Locally)
+
+If you sign the app yourself with a local keystore (e.g. `my-release-key.jks`), you can extract the SHA-256 from that keystore.
+
+#### Command
+
+**On macOS / Linux:**
+
+```bash
+keytool -list -v -keystore /path/to/your-keystore.jks -alias your_key_alias -storepass your_store_password
+```
+
+**On Windows (PowerShell or cmd):**
+
+```bash
+keytool -list -v -keystore C:\path\to\your-keystore.jks -alias your_key_alias -storepass your_store_password
+```
+
+Look for the line:
+
+```
+SHA256: XX:XX:XX:...:XX
+```
+
+Copy that whole SHA256 line value (just the hex with colons).
+
+> **⚠️ Note:** Make sure this is the same keystore + alias used to sign the production builds, not the debug keystore.
+
+---
+
+### Option 3 – From Android Studio (Signing Report)
+
+If you're using the default Gradle signing config, you can use Android Studio's Signing Report.
+
+1. Open the project in Android Studio.
+2. Open the **Gradle** tool window (usually on the right).
+3. Expand:
+   - `:app` (or your app module)
+   - `Tasks`
+   - `android`
+4. Double-click **signingReport**.
+5. In the Run window, you'll see entries like:
+   - Variant: `release` / `debug`
+   - SHA256: ...
+
+Make sure you use the **release** variant (or whatever variant you use for production), then copy the SHA256 value.
+
+---
+
+### Option 4 – From the Signed APK / AAB Using `apksigner` (CLI)
+
+If you already have a signed APK (or AAB), you can extract the cert directly.
+
+#### Using `apksigner` (Part of Android SDK Build Tools)
+
+1. Ensure you have the Android SDK build tools installed (`apksigner` is in `build-tools/<version>/`).
+2. Run:
+
+```bash
+apksigner verify --print-certs /path/to/app-release.apk
+```
+
+You should see output like:
+
+```
+Signer #1 certificate SHA-256 digest: D0:E0:6F:61:2F:BE:ED:6F:C4:37:97:C5:16:15:6F:B1:8B:3B:88:AF:DA:69:1E:0F:FD:F7:D8:82:C9:DA:91:DD
+```
+
+Copy the SHA-256 digest (hex with colons).
+
+> **✅ Tip:** This method guarantees we're using the cert of the actual binary you signed.
+
+
+
+# Configuration
 CUE parameters can be overwritten and customized for your application. You can overwrite these parameters in `strings.xml` and `colors.xml` files in your project.
 
 > Note: If you overwrite CUE parameters in your project and also include a themed SDK other than the default `cuelive`, this may cause incorrect behavior. Therefore, always ensure that, if you overwrite critical values like `apiKey` in your project, these values are set correctly for your client.
